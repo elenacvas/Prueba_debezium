@@ -1,3 +1,7 @@
+
+##
+Los ficheros del instan_client están subidos comprimidos. Hay que descomprimirlos para poder tener la funcionalidad completa: 
+
 ## Arrancar imagenes
 
 docker-compose -f docker-compose.yaml up --build
