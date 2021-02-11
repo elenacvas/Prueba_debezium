@@ -1,7 +1,7 @@
 
 ##
 Los ficheros del instan_client están subidos comprimidos. Hay que descomprimirlos para poder tener la funcionalidad completa: 
-
+gzip -x 
 ## Arrancar imagenes
 
 docker-compose -f docker-compose.yaml up --build
@@ -33,7 +33,6 @@ docker exec -it dbz_oracle /bin/bash
 insert into packagetype values (1001, 'Elena 1', sysdate);
 insert into apollo_prop.packagetype values (1002, 'Elena 2', sysdate);
 insert into apollo_prop.packagetype values (1003, 'Elena 3', sysdate);
-ex
 insert into apollo_prop.packagetype values (1005, 'Elena 5', sysdate);
 insert into apollo_prop.packagetype values (1006, 'Elena 6', sysdate);
 insert into apollo_prop.packagetype values (1007, 'Elena 7', sysdate); @ORACLE_HOME/rdbms/admin/dbmslm.sql
