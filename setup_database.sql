@@ -130,4 +130,9 @@ grant dba to DBEZIUM;
 grant DBA to c##dbzuser;
 
  @$ORACLE_HOME/rdbms/admin/dbmslm.sql
+
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS UNLIMITED;
+
+ALTER TABLE apollo_prop.packagetype add supplemental log data (all) columns;
 exit;

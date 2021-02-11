@@ -4,7 +4,7 @@
         "connector.class" : "io.debezium.connector.oracle.OracleConnector",
         "tasks.max" : "1",
         "database.server.name" : "dbz_oracle",
-        "database.hostname" : "192.168.144.3",
+        "database.hostname" : "192.168.160.3",
         "database.port" : "1521",
         "database.user" : "c##logminer",
         "database.password" : "dbz",
@@ -18,6 +18,12 @@
         "database.schema": "APOLLO_PROP",
         "errors.log.enable": "true",
         "snapshot.lock.timeout.ms":"5000",
-        "include.schema.changes": "true"
+        "include.schema.changes": "true",
+        "transforms": "InsertTopic,InsertSourceDetails",
+        "transforms.InsertTopic.type":"org.apache.kafka.connect.transforms.InsertField$Value",
+        "transforms.InsertTopic.topic.field":"messagetopic",
+        "transforms.InsertSourceDetails.type":"org.apache.kafka.connect.transforms.InsertField$Value",
+        "transforms.InsertSourceDetails.static.field":"messagesource",
+        "transforms.InsertSourceDetails.static.value":"Debezium CDC from Oracle on netstream"
     }
 }
