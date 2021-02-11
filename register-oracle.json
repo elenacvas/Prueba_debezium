@@ -14,7 +14,7 @@
         "database.history.kafka.bootstrap.servers" : "kafka:9092",
         "database.history.kafka.topic": "schema-changes.apollo_prop",
         "database.connection.adapter": "logminer",
-        "table.white.list": "PACKAGETYPE",
+        "table.white.list": "dbz_oracle.APOLLO_PROP_PACKAGETYPE",
         "database.schema": "APOLLO_PROP",
         "errors.log.enable": "true",
         "snapshot.lock.timeout.ms":"5000",
