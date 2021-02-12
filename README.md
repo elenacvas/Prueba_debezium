@@ -16,6 +16,9 @@ docker network inspect -f '{{json .Containers}}' debezium_apollo_last_default | 
 
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-oracle.json
 
+### STOP
+curl -i -X DELETE  http://localhost:8083/connectors/apollo_logmnr-connector
+
 ## 
 docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
     --bootstrap-server kafka:9092 \
@@ -23,9 +26,9 @@ docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consum
     --property print.key=true \
     --topic dbz_oracle.APOLLO_PROP.PACKAGETYPE
 ## Ver topics creados (dentro de la imagen de kafka)
-docker exec -it kafka /bin/bash
-
-kafka-topics.sh --bootstrap-server kafka:9092 --list
+docker exec -it kafka /kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+# para ver si los topics tienen un "healty leader":
+docker exec -it kafka /kafka/bin/kafka-topics.sh --describe --zookeeper zookeeper --topic dbz_oracle.APOLLO_PROP.PACKAGETYPE
 ##  Entrar en la imagen de oracle y hacer los inserts
 docker exec -it dbz_oracle /bin/bash
 
@@ -37,7 +40,8 @@ insert into apollo_prop.packagetype values (1005, 'Elena 5', sysdate);
 insert into apollo_prop.packagetype values (1006, 'Elena 6', sysdate);
 insert into apollo_prop.packagetype values (1007, 'Elena 7', sysdate); @ORACLE_HOME/rdbms/admin/dbmslm.sql
 insert into apollo_prop.packagetype values (1008, 'Elena 8', sysdate);
-
+alter table add birthdate date;
+alter table apollo_prop.packagetype drop column birthdate;
 
 CREATE TABLESPACE xstream_adm_tbs DATAFILE '/u01/app/oracle/oradata/XE/xstream_adm_tbs.dbf'
   SIZE 25M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
