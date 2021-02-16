@@ -1,0 +1,65 @@
+Starting up in standalone mode
+ZooKeeper JMX enabled by default
+Using config: /zookeeper/conf/zoo.cfg
+2021-02-16 11:54:34,436 - INFO  [main:QuorumPeerConfig@135] - Reading configuration from: /zookeeper/conf/zoo.cfg
+2021-02-16 11:54:34,451 - INFO  [main:QuorumPeerConfig@387] - clientPortAddress is 0.0.0.0:2181
+2021-02-16 11:54:34,452 - INFO  [main:QuorumPeerConfig@391] - secureClientPort is not set
+2021-02-16 11:54:34,456 - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+2021-02-16 11:54:34,457 - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 1
+2021-02-16 11:54:34,460 - WARN  [main:QuorumPeerMain@125] - Either no config or no quorum defined in config, running  in standalone mode
+2021-02-16 11:54:34,462 - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@138] - Purge task started.
+2021-02-16 11:54:34,475 - INFO  [main:ManagedUtil@45] - Log4j 1.2 jmx support found and enabled.
+2021-02-16 11:54:34,488 - INFO  [PurgeTask:FileTxnSnapLog@115] - zookeeper.snapshot.trust.empty : false
+2021-02-16 11:54:34,501 - INFO  [main:QuorumPeerConfig@135] - Reading configuration from: /zookeeper/conf/zoo.cfg
+2021-02-16 11:54:34,501 - INFO  [main:QuorumPeerConfig@387] - clientPortAddress is 0.0.0.0:2181
+2021-02-16 11:54:34,501 - INFO  [main:QuorumPeerConfig@391] - secureClientPort is not set
+2021-02-16 11:54:34,502 - INFO  [main:ZooKeeperServerMain@117] - Starting server
+2021-02-16 11:54:34,502 - INFO  [main:FileTxnSnapLog@115] - zookeeper.snapshot.trust.empty : false
+2021-02-16 11:54:34,511 - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@144] - Purge task completed.
+2021-02-16 11:54:34,522 - INFO  [main:Environment@109] - Server environment:zookeeper.version=3.5.8-f439ca583e70862c3068a1f2a7d4d068eec33315, built on 05/04/2020 15:07 GMT
+2021-02-16 11:54:34,524 - INFO  [main:Environment@109] - Server environment:host.name=b596dca7d176
+2021-02-16 11:54:34,524 - INFO  [main:Environment@109] - Server environment:java.version=11.0.8
+2021-02-16 11:54:34,524 - INFO  [main:Environment@109] - Server environment:java.vendor=N/A
+2021-02-16 11:54:34,524 - INFO  [main:Environment@109] - Server environment:java.home=/usr/lib/jvm/java-11-openjdk-11.0.8.10-0.el7_8.x86_64
+2021-02-16 11:54:34,524 - INFO  [main:Environment@109] - Server environment:java.class.path=/zookeeper/bin/../zookeeper-server/target/classes:/zookeeper/bin/../build/classes:/zookeeper/bin/../zookeeper-server/target/lib/*.jar:/zookeeper/bin/../build/lib/*.jar:/zookeeper/bin/../lib/zookeeper-jute-3.5.8.jar:/zookeeper/bin/../lib/zookeeper-3.5.8.jar:/zookeeper/bin/../lib/slf4j-log4j12-1.7.25.jar:/zookeeper/bin/../lib/slf4j-api-1.7.25.jar:/zookeeper/bin/../lib/netty-transport-native-unix-common-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-transport-native-epoll-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-transport-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-resolver-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-handler-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-common-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-codec-4.1.48.Final.jar:/zookeeper/bin/../lib/netty-buffer-4.1.48.Final.jar:/zookeeper/bin/../lib/log4j-1.2.17.jar:/zookeeper/bin/../lib/json-simple-1.1.1.jar:/zookeeper/bin/../lib/jline-2.11.jar:/zookeeper/bin/../lib/jetty-util-9.4.24.v20191120.jar:/zookeeper/bin/../lib/jetty-servlet-9.4.24.v20191120.jar:/zookeeper/bin/../lib/jetty-server-9.4.24.v20191120.jar:/zookeeper/bin/../lib/jetty-security-9.4.24.v20191120.jar:/zookeeper/bin/../lib/jetty-io-9.4.24.v20191120.jar:/zookeeper/bin/../lib/jetty-http-9.4.24.v20191120.jar:/zookeeper/bin/../lib/javax.servlet-api-3.1.0.jar:/zookeeper/bin/../lib/jackson-databind-2.10.3.jar:/zookeeper/bin/../lib/jackson-core-2.10.3.jar:/zookeeper/bin/../lib/jackson-annotations-2.10.3.jar:/zookeeper/bin/../lib/commons-cli-1.2.jar:/zookeeper/bin/../lib/audience-annotations-0.5.0.jar:/zookeeper/bin/../zookeeper-*.jar:/zookeeper/bin/../zookeeper-server/src/main/resources/lib/*.jar:/zookeeper/conf:
+2021-02-16 11:54:34,525 - INFO  [main:Environment@109] - Server environment:java.library.path=/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+2021-02-16 11:54:34,525 - INFO  [main:Environment@109] - Server environment:java.io.tmpdir=/tmp
+2021-02-16 11:54:34,525 - INFO  [main:Environment@109] - Server environment:java.compiler=<NA>
+2021-02-16 11:54:34,525 - INFO  [main:Environment@109] - Server environment:os.name=Linux
+2021-02-16 11:54:34,526 - INFO  [main:Environment@109] - Server environment:os.arch=amd64
+2021-02-16 11:54:34,526 - INFO  [main:Environment@109] - Server environment:os.version=4.19.121-linuxkit
+2021-02-16 11:54:34,526 - INFO  [main:Environment@109] - Server environment:user.name=zookeeper
+2021-02-16 11:54:34,526 - INFO  [main:Environment@109] - Server environment:user.home=/zookeeper
+2021-02-16 11:54:34,526 - INFO  [main:Environment@109] - Server environment:user.dir=/zookeeper
+2021-02-16 11:54:34,527 - INFO  [main:Environment@109] - Server environment:os.memory.free=27MB
+2021-02-16 11:54:34,527 - INFO  [main:Environment@109] - Server environment:os.memory.max=1000MB
+2021-02-16 11:54:34,527 - INFO  [main:Environment@109] - Server environment:os.memory.total=34MB
+2021-02-16 11:54:34,530 - INFO  [main:ZooKeeperServer@938] - minSessionTimeout set to 4000
+2021-02-16 11:54:34,530 - INFO  [main:ZooKeeperServer@947] - maxSessionTimeout set to 40000
+2021-02-16 11:54:34,531 - INFO  [main:ZooKeeperServer@166] - Created server with tickTime 2000 minSessionTimeout 4000 maxSessionTimeout 40000 datadir /zookeeper/txns/version-2 snapdir /zookeeper/data/version-2
+2021-02-16 11:54:34,589 - INFO  [main:Log@169] - Logging initialized @1051ms to org.eclipse.jetty.util.log.Slf4jLog
+2021-02-16 11:54:34,718 - WARN  [main:ContextHandler@1520] - o.e.j.s.ServletContextHandler@3911c2a7{/,null,UNAVAILABLE} contextPath ends with /*
+2021-02-16 11:54:34,718 - WARN  [main:ContextHandler@1531] - Empty contextPath
+2021-02-16 11:54:34,748 - INFO  [main:Server@359] - jetty-9.4.24.v20191120; built: 2019-11-20T21:37:49.771Z; git: 363d5f2df3a8a28de40604320230664b9c793c16; jvm 11.0.8+10-LTS
+2021-02-16 11:54:34,798 - INFO  [main:DefaultSessionIdManager@333] - DefaultSessionIdManager workerName=node0
+2021-02-16 11:54:34,798 - INFO  [main:DefaultSessionIdManager@338] - No SessionScavenger set, using defaults
+2021-02-16 11:54:34,801 - INFO  [main:HouseKeeper@140] - node0 Scavenging every 600000ms
+2021-02-16 11:54:34,824 - INFO  [main:ContextHandler@825] - Started o.e.j.s.ServletContextHandler@3911c2a7{/,null,AVAILABLE}
+2021-02-16 11:54:34,853 - INFO  [main:AbstractConnector@330] - Started ServerConnector@6973bf95{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+2021-02-16 11:54:34,854 - INFO  [main:Server@399] - Started @1316ms
+2021-02-16 11:54:34,855 - INFO  [main:JettyAdminServer@112] - Started AdminServer on address 0.0.0.0, port 8080 and command URL /commands
+2021-02-16 11:54:34,866 - INFO  [main:ServerCnxnFactory@135] - Using org.apache.zookeeper.server.NIOServerCnxnFactory as server connection factory
+2021-02-16 11:54:34,874 - INFO  [main:NIOServerCnxnFactory@673] - Configuring NIO connection handler with 10s sessionless connection timeout, 1 selector thread(s), 6 worker threads, and 64 kB direct buffers.
+2021-02-16 11:54:34,877 - INFO  [main:NIOServerCnxnFactory@686] - binding to port 0.0.0.0/0.0.0.0:2181
+2021-02-16 11:54:34,906 - INFO  [main:ZKDatabase@117] - zookeeper.snapshotSizeFactor = 0.33
+2021-02-16 11:54:34,909 - INFO  [main:FileTxnSnapLog@404] - Snapshotting: 0x0 to /zookeeper/data/version-2/snapshot.0
+2021-02-16 11:54:34,916 - INFO  [main:FileTxnSnapLog@404] - Snapshotting: 0x0 to /zookeeper/data/version-2/snapshot.0
+2021-02-16 11:54:34,942 - INFO  [main:ContainerManager@64] - Using checkIntervalMs=60000 maxPerMinute=10000
+
+
+
+
+
+
+
+2021-02-16 11:54:53,488 - INFO  [SyncThread:0:FileTxnLog@218] - Creating new log file: log.1
