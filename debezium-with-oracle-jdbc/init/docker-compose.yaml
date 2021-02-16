@@ -49,7 +49,7 @@ services:
       - 5500:5500
     volumes:
       - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last:/app
-      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/scripts:/docker-entrypoint-initdb.d
+      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/debezium-with-oracle-jdbc/init:/docker-entrypoint-initdb.d
     environment:
     - ORACLE_ALLOW_REMOTE=YES
     - ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
