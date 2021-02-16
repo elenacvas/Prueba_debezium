@@ -1,8 +1,10 @@
+-- CREACIÓN USUARIO APP
+CREATE USER apollo_prop IDENTIFIED BY apollo;
+GRANT CONNECT TO apollo_prop;
+GRANT DBA TO apollo_prop;
 
-create user apollo_prop identified by apollo;
-grant connect to apollo_prop;
-grant dba to apollo_prop;
 
+-- CREACIÓN USUARIO/TBS LOGMINER
 
 CREATE TABLESPACE LOGMINER_TBS DATAFILE '/u01/app/oracle/oradata/XE/logminer_tbs.dbf' SIZE 25M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
 
@@ -11,13 +13,14 @@ CREATE USER c##logminer IDENTIFIED BY dbz DEFAULT TABLESPACE LOGMINER_TBS QUOTA 
 GRANT CREATE SESSION TO c##dbzuser ;
 GRANT CREATE SESSION TO c##logminer;
 
-grant select on v_$database to c##dbzuser;
+GRANT SELECT ON v_$database TO c##dbzuser;
 GRANT FLASHBACK ANY TABLE TO c##dbzuser ;
 GRANT SELECT ANY TABLE TO c##dbzuser ;
 GRANT SELECT_CATALOG_ROLE TO c##dbzuser ;
 GRANT EXECUTE_CATALOG_ROLE TO c##dbzuser ;
 GRANT SELECT ANY TRANSACTION TO c##dbzuser ;
 GRANT SELECT ANY DICTIONARY TO c##dbzuser ;
+
 -- GRANT LOGMINING TO c##dbzuser ;
 GRANT CREATE TABLE TO c##dbzuser ;
 GRANT ALTER ANY TABLE TO c##dbzuser ;
@@ -38,6 +41,8 @@ GRANT SELECT ON V_$LOG TO c##logminer;
 GRANT LOGMINING TO c##logminer;
 GRANT EXECUTE ON DBMS_LOGMNR TO c##logminer;
 GRANT EXECUTE ON DBMS_LOGMNR_D TO c##logminer;
+GRANT EXECUTE_CATALOG_ROLE TO c##logminer;
+GRANT SELECT ANY TRANSACTION TO c##logminer;
 GRANT SELECT ON V$LOGMNR_LOGS TO c##logminer;
 GRANT SELECT ON V$LOGMNR_CONTENTS TO c##logminer;
 GRANT SELECT ON V$LOGFILE TO c##logminer;
@@ -60,58 +65,56 @@ CREATE USER debezium IDENTIFIED BY dbz;
 
 -- añadir redos de tamaño adecuado
 
-set pages 100
-col status format a8
+SET PAGES 100
+COL STATUS FORMAT a8
 
-select a.group#, b.bytes/1024/1024, b.status
-from v$logfile a, v$log b
-where a.group#=b.group#;
+SELECT a.group#, b.bytes/1024/1024, b.status
+FROM v$logfile a, v$log b
+WHERE a.group#=b.group#;
 
 
-alter database add logfile group 3 size 200M;
-alter database add logfile group 4 size 200M;
-alter database add logfile group 5 size 200M;
-alter database add logfile group 1 size 200M;
-alter database add logfile group 2 size 200M;
-
-ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_1_j1t4lc5q_.log' to group 1;
-ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_2_j1t4l5f2_.log' to group 2;
-ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_3_j1t13w5g_.log' to group 3;
-ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_4_j1t13wk0_.log' to group 4;
-ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_5_j1t13x3f_.log' to group 5;
+ALTER DATABASE ADD LOGFILE GROUP 3 SIZE 200M;
+ALTER DATABASE ADD LOGFILE GROUP 4 SIZE 200M;
+ALTER DATABASE ADD LOGFILE GROUP 5 SIZE 200M;
 
 
 
-select a.group#, b.bytes/1024/1024, b.status
-from v$logfile a, v$log b
-where a.group#=b.group#;
+ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_3_j1t13w5g_.log' TO GROUP 3;
+ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_4_j1t13wk0_.log' TO GROUP 4;
+ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_5_j1t13x3f_.log' TO GROUP 5;
 
 
-alter system switch logfile;
-alter system switch logfile;
-alter system switch logfile;
-alter system switch logfile;
+SELECT a.group#, b.bytes/1024/1024, b.status
+FROM v$logfile a, v$log b
+WHERE a.group#=b.group#;
 
-select a.group#, b.bytes/1024/1024, b.status
-from v$logfile a, v$log b
-where a.group#=b.group#;
 
-alter system switch logfile;
-alter system switch logfile;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM SWITCH LOGFILE;
 
-alter database drop logfile group 1;
-alter database drop logfile group 2;
+SELECT a.group#, b.bytes/1024/1024, b.status
+FROM v$logfile a, v$log b
+WHERE a.group#=b.group#;
 
-select a.group#, b.bytes/1024/1024, b.status
-from v$logfile a, v$log b
-where a.group#=b.group#;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM SWITCH LOGFILE;
+
+
+
+SELECT a.group#, b.bytes/1024/1024, b.status
+FROM v$logfile a, v$log b
+WHERE a.group#=b.group#;
+
+
 -- activar archive log mode
 
-shutdown immediate;
-startup mount
-alter database archivelog;
-alter database open;
-archive log list;
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT
+ALTER DATABASE ARCHIVELOG;
+ALTER DATABASE OPEN;
+ARCHIVE LOG LIST;
 
 -- activar log miner
 ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
@@ -125,9 +128,9 @@ select a.group#, b.bytes/1024/1024, b.status
 from v$logfile a, v$log b
 where a.group#=b.group#;
 
-grant dba to c##logminer;
-grant dba to DBEZIUM;
-grant DBA to c##dbzuser;
+GRANT DBA TO c##logminer;
+GRANT DBA TO DEBEZIUM;
+GRANT DBA TO c##dbzuser;
 
  @$ORACLE_HOME/rdbms/admin/dbmslm.sql
 
@@ -135,4 +138,15 @@ ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
 ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS UNLIMITED;
 
 ALTER TABLE apollo_prop.packagetype add supplemental log data (all) columns;
+
+
+ALTER DATABASE DROP LOGFILE GROUP 1;
+ALTER DATABASE DROP LOGFILE GROUP 2;
+
+ALTER DATABASE ADD LOGFILE GROUP 1 SIZE 200M;
+ALTER DATABASE ADD LOGFILE GROUP 2 SIZE 200M;
+
+
+ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_1_.log' TO GROUP 1;
+ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/fast_recovery_area/XE/onlinelog/02_mf_2_.log' TO GROUP 2;
 exit;
