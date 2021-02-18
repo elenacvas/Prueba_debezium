@@ -1,17 +1,26 @@
+# DEBEZIUM DEPLOYMNET
 
-##
-Los ficheros del instan_client están subidos comprimidos. Hay que descomprimirlos para poder tener la funcionalidad completa: 
+
+## Oracle Instant Client. 
+
+some files are compressed. Have to decompress after download
+```
 gzip -x 
-## Arrancar imagenes
+```
 
+## Launch Docker Images
+
+```
 docker-compose -f docker-compose.yaml up --build
+```
 
-## sacar ip asignada a la imagen de oracle
-docker network ls --> listado de redes creadas
+## Get assigned IP 
+```
+docker network ls --> network list
 
 docker network inspect -f '{{json .Containers}}' debezium_apollo_last_default | jq '.[] | .Name + ":" + .IPv4Address' 
 
-
+```
 ## Start Oracle Connector
 
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-oracle.json
@@ -121,15 +130,16 @@ You should see output similar to the following:
 The Kafka broker has successfully started and is ready for client connections. The terminal will continue to show additional output as Kafka generates it.
 
 ## 3) Start an Oracle Database
-
-
+```
+docker run -it --rm --name dbz_oracle -p 1521:1521 -p 5500:5500 -e GROUP_ID=1 -e ORACLE_ALLOW_REMOTE=YES -e RACLE_HOME=/u01/app/oracle/product/11.2.0/xe   -v /Users/elena.cuevas/workspaces/docker/debezium_apollo_last:/app -v /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/scripts:/docker-entrypoint-initdb.d oracleinanutshell/oracle-xe-11g:latest
+```
 ## 4) Starting Kafka Connect
 After starting Oracle DB, you start the Kafka Connect service. This service exposes a REST API to manage the Debezium Oracle connector.
 Procedure
 Open a new terminal, and use it to start the Kafka Connect service in a container.
 This command runs a new container using the 1.4 version of the debezium/connect image:
 ```
-$ docker run -it --rm --name connect -p 8083:8083 -e GROUP_ID=1 -e CONFIG_STORAGE_TOPIC=my_connect_configs -e OFFSET_STORAGE_TOPIC=my_connect_offsets -e STATUS_STORAGE_TOPIC=my_connect_statuses --link zookeeper:zookeeper --link kafka:kafka --link mysql:mysql debezium/connect:1.4
+$ docker run -it --rm --name connect -p 8083:8083 -e GROUP_ID=1 -e CONFIG_STORAGE_TOPIC=my_connect_configs -e OFFSET_STORAGE_TOPIC=my_connect_offsets -e STATUS_STORAGE_TOPIC=my_connect_statuses --link zookeeper:zookeeper --link kafka:kafka --link dbz_oracle:dbz_oracle debezium/connect:1.4
 ```
 
 Verify that Kafka Connect started and is ready to accept connections.
@@ -161,3 +171,20 @@ No connectors are currently registered with Kafka Connect.
 ```
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-oracle.json
 ```
+
+## Deploy watch_topic tool
+
+docker run -it --rm --name watcher --link zookeeper:zookeeper --link kafka:kafka debezium/kafka:1.4 watch-topic -a -k dbz_oracle.APOLLO_PROP.PACKAGETYPE
+
+
+ container_name: dbz_oracle
+    image: oracleinanutshell/oracle-xe-11g:latest
+    ports:
+      - 1521:1521
+      - 5500:5500
+    volumes:
+      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last:/app
+      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/scripts:/docker-entrypoint-initdb.d 
+    environment:
+    - ORACLE_ALLOW_REMOTE=YES
+    - ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
