@@ -1,27 +1,28 @@
-# DEBEZIUM DEPLOYMNET
+# Steps to Deploy Debezium with docker images.
 
+# 1)  Docker-Compose
 
-## Oracle Instant Client. 
+- Prerequisite:  Oracle Instant Client. 
 
 some files are compressed. Have to decompress after download
 ```
 gzip -x 
 ```
 
-## Launch Docker Images
+1.  Launch Docker Images
 
 ```
 docker-compose -f docker-compose.yaml up --build
 ```
 
-## Get assigned IP 
+2. Get assigned IP 
 ```
 docker network ls --> network list
 
 docker network inspect -f '{{json .Containers}}' debezium_apollo_last_default | jq '.[] | .Name + ":" + .IPv4Address' 
 
 ```
-## Start Debezium Oracle Connector
+3.  Start Debezium Oracle Connector
 ```
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-oracle.json
 ```
@@ -41,7 +42,7 @@ docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consum
 ```
 docker exec -it kafka /kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
 ```
-# Check if topics have healthy leader 
+## Check if topics have healthy leader 
 ```
 docker exec -it kafka /kafka/bin/kafka-topics.sh --describe --zookeeper zookeeper --topic dbz_oracle.APOLLO_PROP.PACKAGETYPE
 ```
@@ -63,28 +64,30 @@ alter table apollo_prop.packagetype drop column birthdate;
 
 ## MANAGE CONNECTOR (REST_API)
 
-### debugmode
-
+### "Debug" Mode
+```
   curl -s "http://localhost:8083/connectors?expand=info&expand=status"
   jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
   column -s : -t| sed 's/\"//g'|sort
+```
 
-
-### STATUS
-
+### Status
+```
  curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
        jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
        column -s : -t| sed 's/\"//g'| sort
 
 curl http://localhost:8083/connectors/apollo_logmnr-connector | jq
+```
 
-
-### RESTART
+### Restart
+```
  curl -i -X POST  http://localhost:8083/connectors/apollo_logmnr-connector/restart
-
-### STOP
+```
+### Stop
+```
 curl -i -X DELETE  http://localhost:8083/connectors/apollo_logmnr-connector
-
+```
  select grantee, granted_role
 from dba_role_privs
 where granted_role='DBA'
