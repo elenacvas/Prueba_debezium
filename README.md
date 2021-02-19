@@ -25,12 +25,13 @@ docker network inspect -f '{{json .Containers}}' debezium_apollo_last_default | 
 3.  Start Debezium Oracle Connector
 ```
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-oracle.json
+
 ```
-### STOP Debezium Connector
+  .  STOP Debezium Connector
 ```
 curl -i -X DELETE  http://localhost:8083/connectors/apollo_logmnr-connector
 ```
-## Launch Topic "listener"
+4.  Launch Topic "listener"
 ```
 docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
     --bootstrap-server kafka:9092 \
@@ -38,15 +39,16 @@ docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consum
     --property print.key=true \
     --topic dbz_oracle.APOLLO_PROP.PACKAGETYPE
 ```
-## List Created topics (inside kafka container)
+5. Checks:
+-  List Created topics (inside kafka container)
 ```
 docker exec -it kafka /kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
 ```
-## Check if topics have healthy leader 
+-  Check if topics have healthy leader 
 ```
 docker exec -it kafka /kafka/bin/kafka-topics.sh --describe --zookeeper zookeeper --topic dbz_oracle.APOLLO_PROP.PACKAGETYPE
 ```
-##  Connect to database and launch inserts
+6.  Connect to database and launch inserts
 ```
 docker exec -it dbz_oracle /bin/bash
 
@@ -56,7 +58,7 @@ insert into apollo_prop.packagetype values (1002, 'Elena 2', sysdate);
 insert into apollo_prop.packagetype values (1003, 'Elena 3', sysdate);
 insert into apollo_prop.packagetype values (1005, 'Elena 5', sysdate);
 insert into apollo_prop.packagetype values (1006, 'Elena 6', sysdate);
-insert into apollo_prop.packagetype values (1007, 'Elena 7', sysdate); @ORACLE_HOME/rdbms/admin/dbmslm.sql
+insert into apollo_prop.packagetype values (1007, 'Elena 7', sysdate);
 insert into apollo_prop.packagetype values (1008, 'Elena 8', sysdate);
 alter table apollo_prop.packagetype add birthdate date;
 alter table apollo_prop.packagetype drop column birthdate;
@@ -64,14 +66,14 @@ alter table apollo_prop.packagetype drop column birthdate;
 
 ## MANAGE CONNECTOR (REST_API)
 
-### "Debug" Mode
+- "Debug" Mode
 ```
   curl -s "http://localhost:8083/connectors?expand=info&expand=status"
   jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
   column -s : -t| sed 's/\"//g'|sort
 ```
 
-### Status
+-  Status
 ```
  curl -s "http://localhost:8083/connectors?expand=info&expand=status" | \
        jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state,.value.info.config."connector.class"]|join(":|:")' | \
@@ -80,22 +82,20 @@ alter table apollo_prop.packagetype drop column birthdate;
 curl http://localhost:8083/connectors/apollo_logmnr-connector | jq
 ```
 
-### Restart
+-  Restart
 ```
  curl -i -X POST  http://localhost:8083/connectors/apollo_logmnr-connector/restart
 ```
-### Stop
+-  Stop
 ```
 curl -i -X DELETE  http://localhost:8083/connectors/apollo_logmnr-connector
 ```
- select grantee, granted_role
-from dba_role_privs
-where granted_role='DBA'
 
 
-# DEPLOY WITH DOCKER
 
-## 1) Starting Zookeeper   
+# 2) DEPLOY WITH DOCKER
+
+## Starting Zookeeper   
 ZooKeeper is the first service you must start.
 Procedure
 Open a terminal and use it to start ZooKeeper in a container.
@@ -118,7 +118,7 @@ port 0.0.0.0/0.0.0.0:2181
 ``` 
 This line indicates that ZooKeeper is ready and listening on port 2181. The terminal will continue to show additional output as ZooKeeper generates it.
 
-## 2) Starting Kafka
+## Starting Kafka
 After starting ZooKeeper, you can start Kafka in a new container.
 
 Open a new terminal and use it to start Kafka in a container.
@@ -138,11 +138,11 @@ You should see output similar to the following:
 ```
 The Kafka broker has successfully started and is ready for client connections. The terminal will continue to show additional output as Kafka generates it.
 
-## 3) Start an Oracle Database
+##  Starting an Oracle Database
 ```
 docker run -it --rm --name dbz_oracle -p 1521:1521 -p 5500:5500 -e GROUP_ID=1 -e ORACLE_ALLOW_REMOTE=YES -e RACLE_HOME=/u01/app/oracle/product/11.2.0/xe   -v /Users/elena.cuevas/workspaces/docker/debezium_apollo_last:/app -v /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/scripts:/docker-entrypoint-initdb.d oracleinanutshell/oracle-xe-11g:latest
 ```
-## 4) Starting Kafka Connect
+## Starting Kafka Connect
 After starting Oracle DB, you start the Kafka Connect service. This service exposes a REST API to manage the Debezium Oracle connector.
 Procedure
 Open a new terminal, and use it to start the Kafka Connect service in a container.
@@ -182,18 +182,6 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 ```
 
 ## Deploy watch_topic tool
-
+```
 docker run -it --rm --name watcher --link zookeeper:zookeeper --link kafka:kafka debezium/kafka:1.4 watch-topic -a -k dbz_oracle.APOLLO_PROP.PACKAGETYPE
-
-
- container_name: dbz_oracle
-    image: oracleinanutshell/oracle-xe-11g:latest
-    ports:
-      - 1521:1521
-      - 5500:5500
-    volumes:
-      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last:/app
-      - /Users/elena.cuevas/workspaces/docker/debezium_apollo_last/scripts:/docker-entrypoint-initdb.d 
-    environment:
-    - ORACLE_ALLOW_REMOTE=YES
-    - ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
+```
